@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:10-alpine
+    restart: always
+    volumes:
+    - ./postgres-data:/var/lib/postgresql/data
+    ports:
+    - "5432:5432"
+    environment:
+      POSTGRES_USER: "fitshopuser"
+      POSTGRES_DB: "adbro"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+  web:
+    build: .
+    volumes:
+      - .:/src
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    restart: always
